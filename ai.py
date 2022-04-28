@@ -18,6 +18,9 @@ class Monster_Basic(Base_Component):
         self.target = (-1,-1)
 
     def take_turn(self, player):
+        # returns message to display and int for goodness of message (if applicable)
+        #   0 = neutral message, 1 = good message, 2 = bad message
+        # takes player to get position, probably change this later
         # assume it sees player if player sees it
 
         # update state
@@ -55,9 +58,12 @@ class Monster_Basic(Base_Component):
 
             # if player is adjacent ie distance < 1.5, attack
             if np.sqrt(dx**2 + dy**2) < 1.5:
-                print(player.class_type.hp)
-                player.class_type.change_hp(-1*self.owner.class_type.power)
-                print("the blobman strikes!")
+                to_hit = np.random.randint(0,100)
+                if to_hit <= 100 - player.class_type.get_evasion():
+                    damage, newhp = player.class_type.change_hp(-1*self.owner.class_type.power)
+                    return "{name} strikes for {dam} damage!".format(name = self.owner.get_name(), dam = damage), 2
+                else:
+                    return "{name} swings and misses".format(name = self.owner.get_name()), 1
 
             # otherwise move
             else:
@@ -119,6 +125,7 @@ class Monster_Basic(Base_Component):
                 elif wall_map[current_pos[0] + dx_right][current_pos[1] + dy_right] != mapgen.MAP_WALL and entity_map[current_pos[0] + dx_right][current_pos[1] + dy_right] == 0:
                     self.owner.floor.set_entity_pos(self.owner, current_pos[0] + dx_right, current_pos[1] + dy_right)
                 # else do nothing
+        return None
 
 def find_path(entity, floor, target):
     # TODO: actual pathfinding

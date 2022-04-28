@@ -28,6 +28,7 @@ class Entity:
         if self.class_type:
             self.class_type.owner = self
 
+
     def move(self, dx, dy):
         # update entity map on floor
         if self.floor != None:
@@ -66,10 +67,16 @@ class Entity:
         self.floor = floor
 
     def set_sprite_index(self, new_index):
-        self.sprite_index = new_index
+        if self.class_type:
+            self.class_type.sprite_index = new_index
+        else:
+            self.sprite_index = new_index
 
     def get_sprite_index(self):
-        return self.sprite_index
+        if self.class_type:
+            return self.class_type.get_sprite_index()
+        else:
+            return self.sprite_index
 
     def does_block(self):
         return self.blocks_movement

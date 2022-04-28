@@ -194,7 +194,7 @@ def calc_fov(origin, range_limit, the_floor):
     # will need to use transparency map, bevel map, and visibility map
     # public facing function, calcs fov from origin out to distance rangelimit
     # adapted from http://www.adammil.net/blog/v125_roguelike_vision_algorithms.html#mycode
-    # thanks adam milazzo <3 <3 <3
+
     map = the_floor.get_map()
     vis_map = np.zeros(map.get_map().shape)
     vis_map[origin[0]][origin[1]] = FOV_VISIBLE
